@@ -2,7 +2,14 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-    // We will use this later (should use state for madlib but start with just variable)
+    // 2 variables for user items but...the first will become a state (and 1 state)
+    const selections = {
+        weatherdesc: "rainy",
+        temp: "cold",
+        smelldesc: "delicious",
+        food: "chicken",
+        room: "kitchen"
+    };
     const original = "It was a :weatherdesc: :temp: day when I woke up to the :smelldesc: smell of :food: cooking in the :room: downstairs.";
     const [lib, setLib] = useState(original);
 
@@ -32,29 +39,16 @@ function App() {
     )
 
     function changeText() {
-        // first the simple way using for
-        // Well the more Java way
-        const selections = {
-            weatherdesc: "rainy",
-            temp: "cold",
-            smelldesc: "delicious",
-            food: "chicken",
-            room: "kitchen"
-        };
-
+        // Now to make it look more like react (we'll need map for the full bit)
         let newLib = "";
 
-        // Make sure you don't use 'in' Python people
-        // let word in text would give indexes
-        // .split(/\s/) would be better
-        for (let word of lib.split(" ")) {
-            if (word.includes(":")) {
-                // We can use split and grab the middle item to find items between to dividers
-                newLib += " " + selections[word.split(":")[1]] + " ";
-            } else {
-                newLib += " " + word + " ";
-            }
-        }
+        // This wasn't really the JavaScript way so we'll use a function
+        // (with ternary and backticks)
+        lib.split(" ").forEach((word) => {
+            word.includes(":")
+                ? newLib += ` ${selections[word.split(":")[1]]} `
+                : newLib += ` ${word} `;
+        });
         setLib(newLib);
     }
 }
